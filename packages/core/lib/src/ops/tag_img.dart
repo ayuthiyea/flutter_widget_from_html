@@ -59,14 +59,16 @@ class _ImageLayoutState extends State<ImageLayout> {
       _stream.addListener(_streamListener);
     }
 
-
     if (hasDimensions) {
       // we may have dimensions in 3 cases
       // 1. From the beginning, via widget constructor
       // 2. From synchronized image info, immediately in the first build
       // 3. From async update / triggered state change (see above)
       return CustomSingleChildLayout(
-        child: Image(image: widget.image, fit: BoxFit.cover),
+        child: Align(
+          alignment: Alignment.center,
+          child: Image(image: widget.image, fit: BoxFit.cover),
+        ),
         delegate: _ImageLayoutDelegate(height: height, width: width),
       );
     }
@@ -86,8 +88,7 @@ class _ImageLayoutDelegate extends SingleChildLayoutDelegate {
         ratio = width / height;
 
   @override
-  BoxConstraints getConstraintsForChild(BoxConstraints constraints) =>
-      BoxConstraints.tight(getSize(constraints));
+  BoxConstraints getConstraintsForChild(BoxConstraints constraints) => BoxConstraints.tight(getSize(constraints));
 
   @override
   Size getSize(BoxConstraints bc) {
@@ -102,8 +103,7 @@ class _ImageLayoutDelegate extends SingleChildLayoutDelegate {
   }
 
   @override
-  bool shouldRelayout(_ImageLayoutDelegate other) =>
-      height != other.height || width != other.width;
+  bool shouldRelayout(_ImageLayoutDelegate other) => height != other.height || width != other.width;
 }
 
 class _ImageSpan extends WidgetSpan {
@@ -115,9 +115,7 @@ class _ImageSpan extends WidgetSpan {
         );
 
   @override
-  void build(ui.ParagraphBuilder builder,
-      {double textScaleFactor = 1.0,
-      @required List<PlaceholderDimensions> dimensions}) {
+  void build(ui.ParagraphBuilder builder, {double textScaleFactor = 1.0, @required List<PlaceholderDimensions> dimensions}) {
     super.build(builder, textScaleFactor: 1.0, dimensions: dimensions);
   }
 }
@@ -157,18 +155,14 @@ class _TagImg {
         },
       );
 
-  static Widget _buildImage(_TagImgMetadata img, WidgetFactory wf) =>
-      wf.buildImage(
+  static Widget _buildImage(_TagImgMetadata img, WidgetFactory wf) => wf.buildImage(
         img.url,
         height: img.height,
         text: img.text,
         width: img.width,
       );
 
-  static String _getAttr(Map<dynamic, String> map, String key, String key2) =>
-      map.containsKey(key)
-          ? map[key]
-          : map.containsKey(key2) ? map[key2] : null;
+  static String _getAttr(Map<dynamic, String> map, String key, String key2) => map.containsKey(key) ? map[key] : map.containsKey(key2) ? map[key2] : null;
 
   static double _getDimension(
     NodeMetadata meta,
