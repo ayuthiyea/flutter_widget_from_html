@@ -3,6 +3,7 @@ import 'dart:ui' as ui show ParagraphBuilder;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 import 'package:html/dom.dart' as dom;
+import 'package:cached_network_image/cached_network_image.dart';
 
 import 'core_helpers.dart';
 import 'core_html_widget.dart';
@@ -192,7 +193,7 @@ class WidgetFactory {
   }
 
   ImageProvider buildImageFromUrl(String url) =>
-      url?.isNotEmpty == true ? NetworkImage(url) : null;
+      url?.isNotEmpty == true ? CachedNetworkImageProvider(url) : null;
 
   Widget buildPadding(Widget child, EdgeInsets padding) =>
       child != null && padding != null && padding != const EdgeInsets.all(0)
